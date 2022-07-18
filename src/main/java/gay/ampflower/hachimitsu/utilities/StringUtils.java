@@ -1,5 +1,7 @@
 package gay.ampflower.hachimitsu.utilities;
 
+import org.jetbrains.annotations.VisibleForTesting;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -201,6 +203,11 @@ public final class StringUtils {
 			case QUOTE_PAIRED:
 				return ARRAY_QUOTE_PAIRED.clone();
 		}
+		return createCharHashArray0(in);
+	}
+
+	@VisibleForTesting
+	static char[] createCharHashArray0(String in) {
 		int len = Integer.highestOneBit(in.length());
 		if (len != in.length()) len <<= 1;
 		int m = len - 1;
