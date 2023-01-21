@@ -16,7 +16,8 @@ public final class StringUtils {
 		ARRAY_QUOTES = {'`', '’', '"', 0, 0, '”', 0, '\''},
 		ARRAY_QUOTE_PAIRED = {'\uFFFF', 0, '｢', 0, 0, 0, 0, 0, 0, 0, 0, 0, '「', 0, '『', 0, 0, 0, 0, 0, 0, 0, 0, 0, '‘', 0, 0, 0, '“', 0, 0, 0},
 		ARRAY_HEX_DIGITS = {'\uffff', 'A', 'B', 'C', 'D', 'E', 'F', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'a', 'b', 'c', 'd', 'e', 'f', 0, 0, 0, 0, 0, 0, 0, 0, 0, '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 0, 0, 0, 0, 0, 0};
-	public static final String DEFAULT_DELIMITERS = " \t\n\r\f", QUOTES = "\"'`”’", QUOTE_PAIRED = "“‘「『｢";
+	public static final String DEFAULT_DELIMITERS = " \t\n\r\f", QUOTES = "\"'`”’", QUOTE_PAIRED = "“‘「『｢",
+		HEX_DIGITS = "0123456789abcdefABCDEF";
 
 	private StringUtils() {
 	}

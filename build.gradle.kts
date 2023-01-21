@@ -32,6 +32,9 @@ tasks {
 		options.isDeprecation = true
 		options.isWarnings = true
 	}
+	test {
+		useJUnitPlatform()
+	}
 }
 
 publishing {
