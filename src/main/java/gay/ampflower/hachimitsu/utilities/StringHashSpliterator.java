@@ -9,7 +9,7 @@ public final class StringHashSpliterator implements IStringSpliterator {
 	private final char[] delimiters;
 	private final String toSplit;
 	private String cache;
-	private int ib, ia, ib$q;
+	private int il, ib, ia, ib$q;
 
 	public StringHashSpliterator(String toSplit) {
 		this(toSplit, ARRAY_DEFAULT_DELIMITERS, true);
@@ -61,6 +61,7 @@ public final class StringHashSpliterator implements IStringSpliterator {
 			ia = ib;
 			ib = i;
 		} else {
+			il = ib$q;
 			seekToNonDelimiter();
 			ia = ib;
 			if (respectQuotes) {
@@ -98,40 +99,60 @@ public final class StringHashSpliterator implements IStringSpliterator {
 
 	@Contract(pure = true)
 	public String current() {
-		return cache == null ? (cache = toSplit.substring(Math.min(ia, ib), ib$q)) : cache;
+		return cache == null ? (cache = toSplit.substring(start(), ib$q)) : cache;
 	}
 
 	@Contract(pure = true)
 	public boolean startsWith(String str) {
-		int i = Math.min(ia, ib), l = ib$q - i;
+		int i = start(), l = ib$q - i;
 		return str.length() <= l && toSplit.startsWith(str, i);
 	}
 
 	@Contract(pure = true)
 	public boolean startsWith(String str, boolean ignoreCase) {
-		int i = Math.min(ia, ib), l = ib$q - i;
+		int i = start(), l = ib$q - i;
 		return str.length() <= l && toSplit.regionMatches(ignoreCase, i, str, 0, str.length());
 	}
 
 	@Override
 	public int currentLength() {
-		return ib$q - Math.min(ia, ib);
+		return ib$q - start();
 	}
 
 	@Override
 	public char charAt(int index) {
-		return toSplit.charAt(Math.min(ia, ib) + index);
+		return toSplit.charAt(start() + index);
+	}
+
+	public int distanceFromLast() {
+		return start() - il;
+	}
+
+	public char peekDelimiter(char def) {
+		return ib$q == toSplit.length() ? def : toSplit.charAt(ib$q);
+	}
+
+	public int peekDelimiter() {
+		return ib$q == toSplit.length() ? -1 : toSplit.charAt(ib$q);
+	}
+
+	public int start() {
+		return Math.min(ia, ib);
+	}
+
+	public int end() {
+		return ib$q;
 	}
 
 	@Contract(pure = true)
 	public boolean contentEquals(String str) {
-		int i = Math.min(ia, ib), l = ib$q - i;
+		int i = start(), l = ib$q - i;
 		return str.length() == l && toSplit.regionMatches(i, str, 0, l);
 	}
 
 	@Contract(pure = true)
 	public boolean contentEquals(String str, boolean ignoreCase) {
-		int i = Math.min(ia, ib), l = ib$q - i;
+		int i = start(), l = ib$q - i;
 		return str.length() == l && toSplit.regionMatches(ignoreCase, i, str, 0, l);
 	}
 
@@ -165,7 +186,7 @@ public final class StringHashSpliterator implements IStringSpliterator {
 
 	@Contract(pure = true)
 	public int currentInt(int def, int radix) {
-		return parseInt(toSplit, Math.min(ia, ib), ib$q, def, radix);
+		return parseInt(toSplit, start(), ib$q, def, radix);
 	}
 
 	@Contract(pure = true)
@@ -177,22 +198,22 @@ public final class StringHashSpliterator implements IStringSpliterator {
 
 	@Contract(pure = true)
 	public long currentLong(long def, int radix) {
-		return parseLong(toSplit, Math.min(ia, ib), ib$q, def, radix);
+		return parseLong(toSplit, start(), ib$q, def, radix);
 	}
 
 	@Override
 	public long currentDuration() {
-		return parseDuration(toSplit, Math.min(ia, ib), ib$q);
+		return parseDuration(toSplit, start(), ib$q);
 	}
 
 	@Contract(pure = true)
 	public long tryParseLong(long def, int radix) {
-		return StringUtils.tryParseLong(toSplit, Math.min(ia, ib), ib$q, def, radix);
+		return StringUtils.tryParseLong(toSplit, start(), ib$q, def, radix);
 	}
 
 	@Contract(pure = true)
 	public long tryParseUnsignedLong(long def, int radix) {
-		return StringUtils.tryParseUnsignedLong(toSplit, Math.min(ia, ib), ib$q, def, radix);
+		return StringUtils.tryParseUnsignedLong(toSplit, start(), ib$q, def, radix);
 	}
 
 	@Contract(pure = true)
